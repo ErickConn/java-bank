@@ -84,7 +84,35 @@ public class Menu {
 		System.out.println("2 - Saque");
 		System.out.println("3 - Transferência");
 			
-		String id = scanner.nextLine();
+		String option = scanner.nextLine();
+		
+		switch(option) {
+			case "0":
+				return;
+			case "1":
+				this.createDeposit();
+				break;
+			case "2":
+				this.createWithraw();
+				break;
+			case "3":
+				this.createTransference();
+				break;
+			default:
+				System.out.println("Opção inválida");
+		}
+	}
+	
+	public void createDeposit() {
+		
+	}
+	
+	public void createWithraw() {
+		
+	}
+	
+	public void createTransference() {
+		
 	}
 	
 }
