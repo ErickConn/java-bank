@@ -36,7 +36,7 @@ public class Transaction {
 	}
 	
 	public Transaction printTransaction() {
-		System.out.println("Transaction details: " + this.getId() + " " + this.getValue() + " " +  this.getType() + " " + this.getIdTo() + " " + this.getIdFrom());
+		System.out.println("Detalhes da transação: " + this.getId() + " " + this.getValue() + " " +  this.getType() + " " + this.getIdTo() + " " + this.getIdFrom());
 		return this;
 	}
 	
