@@ -29,33 +29,33 @@ public class Client {
 		double newBalance = this.getBalance() + value;
 		setBalance(newBalance);
 		if(deposit != null) {
-			System.out.println("Deposited sucessfully. "+"New balance: " + this.getBalance());
+			System.out.println("Déposito realizado com sucesso. "+"Novo saldo: " + this.getBalance());
 			System.out.println(deposit.printTransaction());
 		}
 	}
 	
 	public void withdraw(int value) {
 		if(this.balance < value) {
-			System.out.println("No founds. "+ "Current balance: " + this.getBalance());
+			System.out.println("Fundos insuficientes. "+ "Saldo atual: " + this.getBalance());
 			return;
 		}
 		Transaction withdraw = new Transaction(2, value, this.getId(), this.getId());
 		double newBalance = this.getBalance() - value;
 		setBalance(newBalance);
 		if(withdraw != null) {
-			System.out.println("Withdrawed sucessfully. "+"New balance: " + this.getBalance());
+			System.out.println("Saque realizado com sucesso. "+"Novo saldo: " + this.getBalance());
 			System.out.println(withdraw.printTransaction());
 		}
 	}
 	
 	public void addTransaction(int value, Client clientTo) {
 		if (clientTo == null || clientTo == this) {
-			System.out.println("Client not valid.");
+			System.out.println("Cliente não é válido.");
 			return;
 		}
 		
 		if(this.balance < value) {
-			System.out.println("No founds. "+ "Current balance: " + this.getBalance());
+			System.out.println("Fundos insuficientes "+ "Saldo atual: " + this.getBalance());
 			return;
 		}
 		
@@ -65,7 +65,7 @@ public class Client {
 		double newBalanceCl2 = clientTo.getBalance() + value;
 		clientTo.setBalance(newBalanceCl2);
 		if (transference != null) {
-			System.out.println("Transference succedded.");
+			System.out.println("Transferência realizada com sucesso.");
 			System.out.println(this.getName() + ": " + this.getBalance());
 			System.out.println(clientTo.getName() + ": " + clientTo.getBalance());
 			System.out.println(transference.printTransaction());
