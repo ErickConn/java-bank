@@ -48,10 +48,13 @@ public class Menu {
 }
 	
 	public void createClient() {
-		System.out.print("Digite o nome do cliente: ");
+		System.out.println("Digite o nome do cliente: ");
         String name = scanner.nextLine();
+        
+        System.out.println("Digite sua senha: ");
+        String password = scanner.nextLine();
 
-        Client account = bankService.createAccount(name);
+        Client account = bankService.createAccount(name, password);
         System.out.println("Conta criada: " + account.getId() + " | Nome: " + account.getName());
 	}
 	
@@ -60,21 +63,52 @@ public class Menu {
 		String id = scanner.nextLine();
 		
 		Client account = bankService.getAccount(id);
-		// Edit menu
-		System.out.println("");
+		System.out.println("Cliente encontrado: " + account.getId() + " " + account.getName());
 		
+		System.out.println("0 - Voltar");
+		System.out.println("1 - Editar nome do cliente");
+		
+		String option = scanner.nextLine();
+		switch (option) {
+			case "0":
+				return;
+			case "1":
+				System.out.println("Digite o novo nome do cliente: ");
+				String nome = scanner.nextLine();
+				account.setName(nome);
+				System.out.println("Sucesso. Novo nome: " + nome);
+				break;
+			default:
+				System.out.println("❌ Opção inválida. Tente novamente.");
+		}
 		
 	}
 	
 	public void accessClient() {
-		System.out.print("Digite o id do cliente: ");
-		String id = scanner.nextLine();
+		System.out.print("Digite o nome do cliente: ");
+		String nome = scanner.nextLine();
 		
-		Client account = bankService.getAccount(id);
-		// Access menu
+		Client account = bankService.getAccount(nome);
 		System.out.println("Id do cliente: " + account.getId());
 		System.out.println("Nome: " + account.getName());
 		System.out.println("Saldo: " + account.getBalance());
+	}
+	
+	public void login() {
+		System.out.println("Digite seu nome: ");
+		String nome = scanner.nextLine();
+		Client account = bankService.getAccount(nome);
+		System.out.println("Digite sua senha: ");
+		String password = scanner.nextLine();
+		if (account.getPassword().equals(password)) {
+			System.out.println("Login realizado com sucesso!");
+		}else {
+			ClearConsole.clearConsole();
+			System.out.println("Verifique suas credenciais");
+			this.mainMenu();
+		}
+		
+		
 	}
 	
 	public void createTransaction() {
@@ -105,14 +139,33 @@ public class Menu {
 	
 	public void createDeposit() {
 		
+		this.login();
+		Transaction deposit = bankService.deposit(null, 0);
+		if(deposit != null) {
+			System.out.println("Déposito realizado com sucesso. "+"Novo saldo: " + this.getBalance());
+			System.out.println(deposit.printTransaction());
+		}
+		
 	}
 	
 	public void createWithraw() {
-		
+		this.login();
+		Transaction withdraw = bankService.withdraw(null, 0);
+		if (withdraw.equals(null)) {
+			System.out.println("Fundos insuficientes.");
+		}else {
+			System.out.println("Saque realizado com sucesso.");
+			withdraw.printTransaction();
+		}
 	}
 	
 	public void createTransference() {
-		
+		this.login();
+		Transaction transference = bankService.transfer(null, null, 0);
+		if (transference != null) {
+			System.out.println("Transferência realizada com sucesso.");
+			System.out.println(transference.printTransaction());
+		}
 	}
 	
 }
