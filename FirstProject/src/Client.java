@@ -3,6 +3,7 @@ public class Client {
 	private int id = nextId++;
 	private String name;
 	private double balance;
+	private String password;
 	
 	int getId() {
 		return this.id;
@@ -24,53 +25,28 @@ public class Client {
 		return this.balance;
 	}
 	
-	public void deposit(int value) {
+	void setPassword(String password) {
+		this.password = password;
+	}
+	
+	String getPassword() {
+		return this.password;
+	}
+	
+	public Transaction deposit(int value) {
 		Transaction deposit = new Transaction(1, value, this.getId(), this.getId());
 		double newBalance = this.getBalance() + value;
 		setBalance(newBalance);
-		if(deposit != null) {
-			System.out.println("Déposito realizado com sucesso. "+"Novo saldo: " + this.getBalance());
-			System.out.println(deposit.printTransaction());
-		}
+		return deposit;
 	}
 	
-	public void withdraw(int value) {
+	public Transaction withdraw(int value) {
 		if(this.balance < value) {
-			System.out.println("Fundos insuficientes. "+ "Saldo atual: " + this.getBalance());
-			return;
+			return null;
 		}
 		Transaction withdraw = new Transaction(2, value, this.getId(), this.getId());
 		double newBalance = this.getBalance() - value;
 		setBalance(newBalance);
-		if(withdraw != null) {
-			System.out.println("Saque realizado com sucesso. "+"Novo saldo: " + this.getBalance());
-			System.out.println(withdraw.printTransaction());
-		}
-	}
-	
-	public void addTransaction(int value, Client clientTo) {
-		if (clientTo == null || clientTo == this) {
-			System.out.println("Cliente não é válido.");
-			return;
-		}
-		
-		if(this.balance < value) {
-			System.out.println("Fundos insuficientes "+ "Saldo atual: " + this.getBalance());
-			return;
-		}
-		
-		Transaction transference = new Transaction(3, value, this.getId(), clientTo.getId());
-		double newBalanceCl1 = this.getBalance() - value;
-		setBalance(newBalanceCl1);
-		double newBalanceCl2 = clientTo.getBalance() + value;
-		clientTo.setBalance(newBalanceCl2);
-		if (transference != null) {
-			System.out.println("Transferência realizada com sucesso.");
-			System.out.println(this.getName() + ": " + this.getBalance());
-			System.out.println(clientTo.getName() + ": " + clientTo.getBalance());
-			System.out.println(transference.printTransaction());
-		}
-		
-		
+		return withdraw;
 	}
 }
