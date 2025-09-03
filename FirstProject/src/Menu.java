@@ -16,7 +16,6 @@ public class Menu {
 			System.out.println("3 - Acessar um cliente.");
 			System.out.println("4 - Realizar uma transação.");
             System.out.println("5 - Visualizar todas as contas");
-            System.out.println("6 - Visualizar todas as transações");
 		
 		String option = scanner.nextLine();
 		
@@ -48,19 +47,27 @@ public class Menu {
 }
 	
 	public void createClient() {
+		ClearConsole.clearConsole();
+		
 		System.out.println("Digite o nome do cliente: ");
         String name = scanner.nextLine();
         
         System.out.println("Digite sua senha: ");
         String password = scanner.nextLine();
-
+        
+        ClearConsole.clearConsole();
+        
         Client account = bankService.createAccount(name, password);
         System.out.println("Conta criada: " + account.getId() + " | Nome: " + account.getName());
 	}
 	
 	public void editClient() {
+		ClearConsole.clearConsole();
+		
 		System.out.print("Digite o id do cliente: ");
 		String id = scanner.nextLine();
+		
+		ClearConsole.clearConsole();
 		
 		Client account = bankService.getAccount(id);
 		System.out.println("Cliente encontrado: " + account.getId() + " " + account.getName());
@@ -69,6 +76,9 @@ public class Menu {
 		System.out.println("1 - Editar nome do cliente");
 		
 		String option = scanner.nextLine();
+		
+		ClearConsole.clearConsole();
+		
 		switch (option) {
 			case "0":
 				return;
@@ -85,8 +95,12 @@ public class Menu {
 	}
 	
 	public void accessClient() {
+		ClearConsole.clearConsole();
+		
 		System.out.print("Digite o nome do cliente: ");
 		String nome = scanner.nextLine();
+		
+		ClearConsole.clearConsole();
 		
 		Client account = bankService.getAccount(nome);
 		System.out.println("Id do cliente: " + account.getId());
@@ -94,24 +108,30 @@ public class Menu {
 		System.out.println("Saldo: " + account.getBalance());
 	}
 	
-	public void login() {
+	public Client login() {
+		ClearConsole.clearConsole();
+		
 		System.out.println("Digite seu nome: ");
-		String nome = scanner.nextLine();
-		Client account = bankService.getAccount(nome);
+		String name = scanner.nextLine();
 		System.out.println("Digite sua senha: ");
 		String password = scanner.nextLine();
-		if (account.getPassword().equals(password)) {
+		
+		ClearConsole.clearConsole();
+		
+		Client login = bankService.login(name, password);
+		if (login != null) {
 			System.out.println("Login realizado com sucesso!");
 		}else {
-			ClearConsole.clearConsole();
-			System.out.println("Verifique suas credenciais");
-			this.mainMenu();
+			System.out.println("Verifique suas credenciais.");
 		}
 		
+		return login;
 		
 	}
 	
 	public void createTransaction() {
+		ClearConsole.clearConsole();
+		
 		System.out.println("Escolha o tipo de transação: ");
 		System.out.println("0 - Voltar");
 		System.out.println("1 - Depósito");
@@ -119,6 +139,8 @@ public class Menu {
 		System.out.println("3 - Transferência");
 			
 		String option = scanner.nextLine();
+		
+		ClearConsole.clearConsole();
 		
 		switch(option) {
 			case "0":
@@ -138,19 +160,36 @@ public class Menu {
 	}
 	
 	public void createDeposit() {
+		ClearConsole.clearConsole();
 		
-		this.login();
-		Transaction deposit = bankService.deposit(null, 0);
+		Client account = this.login();
+		if (account == null)
+			return;
+		System.out.println("Digite o valor a ser depositado: ");
+		int value = Integer.parseInt(scanner.nextLine());
+		
+		ClearConsole.clearConsole();
+		
+		Transaction deposit = bankService.deposit(account.getName(), value);
 		if(deposit != null) {
-			System.out.println("Déposito realizado com sucesso. "+"Novo saldo: " + this.getBalance());
+			System.out.println("Déposito realizado com sucesso.");
 			System.out.println(deposit.printTransaction());
 		}
 		
 	}
 	
 	public void createWithraw() {
-		this.login();
-		Transaction withdraw = bankService.withdraw(null, 0);
+		ClearConsole.clearConsole();
+		
+		Client account = this.login();
+		if (account == null)
+			return;
+		System.out.println("Digite o valor a ser sacado: ");
+		int value = Integer.parseInt(scanner.nextLine());
+		Transaction withdraw = bankService.withdraw(account.getName(), value);
+		
+		ClearConsole.clearConsole();
+		
 		if (withdraw.equals(null)) {
 			System.out.println("Fundos insuficientes.");
 		}else {
@@ -160,8 +199,19 @@ public class Menu {
 	}
 	
 	public void createTransference() {
-		this.login();
-		Transaction transference = bankService.transfer(null, null, 0);
+		ClearConsole.clearConsole();
+		
+		Client account = this.login();
+		if (account == null)
+			return;
+		System.out.println("Digite o nome do cliente que quer transferir para: ");
+		String name = scanner.nextLine();
+		System.out.println("Digite o valor a ser transferido: ");
+		int value = Integer.parseInt(scanner.nextLine());
+		
+		ClearConsole.clearConsole();
+		
+		Transaction transference = bankService.transfer(account.getName(), name, value);
 		if (transference != null) {
 			System.out.println("Transferência realizada com sucesso.");
 			System.out.println(transference.printTransaction());
