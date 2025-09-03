@@ -12,28 +12,37 @@ public class BankService {
 		return client;
 	}
 	
-	public Client getAccount(String id) {
-		Client client = accounts.get(id);
+	public Client getAccount(String name) {
+		Client client = accounts.get(name);
 		return client;
 	}
 	
-	public Transaction deposit(String id, int value) {
-		Client client = this.getAccount(id);
+	public Client login(String name, String password) {
+		Client account = this.getAccount(name);
+		if (account.getPassword().equals(password)) {
+			return account;
+		}else {
+			return null;
+		}
+	}
+	
+	public Transaction deposit(String name, int value) {
+		Client client = this.getAccount(name);
 		Transaction deposit = client.deposit(value);
 		return deposit;
 	}
 	
-	public Transaction withdraw(String id, int value) {
-		Client client = this.getAccount(id);
+	public Transaction withdraw(String name, int value) {
+		Client client = this.getAccount(name);
 		Transaction withdraw = client.withdraw(value);
 		return withdraw;
 	}
 	
-	public Transaction transfer(String idFrom, String idTo, int value) {
-		Client clientTo = this.getAccount(idTo);
-		Client clientFrom = this.getAccount(idFrom);
+	public Transaction transfer(String nameFrom, String nameTo, int value) {
+		Client clientTo = this.getAccount(nameTo);
+		Client clientFrom = this.getAccount(nameFrom);
 		
-		if (clientTo.equals(null) || clientTo.equals(clientTo)) {
+		if (clientTo.equals(null) || clientTo.equals(clientFrom)) {
 			System.out.println("Cliente não é válido.");
 			return null;
 		}
